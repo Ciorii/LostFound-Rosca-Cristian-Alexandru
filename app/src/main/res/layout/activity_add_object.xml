@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Adauga obiect"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp"/>
+
+    <EditText
+        android:id="@+id/etTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Denumire obiect"
+        android:layout_marginBottom="12dp"/>
+
+    <EditText
+        android:id="@+id/etDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Detalii"
+        android:minLines="3"
+        android:gravity="top"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Categoria:"
+        android:layout_marginBottom="4dp"/>
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="32dp">
+
+        <RadioButton
+            android:id="@+id/rbLost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pierdut"
+            android:checked="true"/>
+
+        <RadioButton
+            android:id="@+id/rbFound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gasit"
+            android:layout_marginStart="24dp"/>
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        android:backgroundTint="#1976D2"/>
+
+</LinearLayout>
