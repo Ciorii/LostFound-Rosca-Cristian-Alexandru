@@ -1,3 +1,4 @@
+# Android
 *.iml
 .gradle
 /local.properties
@@ -13,3 +14,15 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Server C#
+server/bin/
+server/obj/
+server/.vs/
+server/**/*.user
+server/firebasekey.json
+server/appsettings.local.json
+
+# General
+.DS_Store
+*.log
