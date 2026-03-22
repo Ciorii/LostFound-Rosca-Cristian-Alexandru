@@ -16,11 +16,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
+import com.example.lostfound.api.ApiService;
+import com.example.lostfound.api.RetrofitClient;
+import com.example.lostfound.models.LostObject;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import java.util.List;
-import java.util.Map;
 
 public class MapPickerActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -94,23 +98,30 @@ public class MapPickerActivity extends AppCompatActivity implements OnMapReadyCa
             return;
         }
 
-        Map<String, Object> obj = new HashMap<>();
-        obj.put("title", title);
-        obj.put("description", description);
-        obj.put("category", category);
-        obj.put("address", etAddress.getText().toString().trim());
-        obj.put("latitude", lat);
-        obj.put("longitude", lng);
+        LostObject obj = new LostObject();
+        obj.setTitle(title);
+        obj.setDescription(description);
+        obj.setCategory(category);
+        obj.setAddress(etAddress.getText().toString().trim());
+        obj.setLatitude(lat);
+        obj.setLongitude(lng);
 
-        FirebaseFirestore.getInstance()
-                .collection("objects")
-                .add(obj)
-                .addOnSuccessListener(ref -> {
-                    Toast.makeText(this, "Salvat!", Toast.LENGTH_SHORT).show();
+        ApiService apiService = RetrofitClient.getApiService();
+        apiService.addObject(obj).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(MapPickerActivity.this, "Salvat!", Toast.LENGTH_SHORT).show();
                     finishAffinity();
-                })
-                .addOnFailureListener(e ->
-                        Toast.makeText(this, "Eroare: " + e.getMessage(), Toast.LENGTH_SHORT).show()
-                );
+                } else {
+                    Toast.makeText(MapPickerActivity.this, "Eroare server!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(MapPickerActivity.this, "Conexiune esuata: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
