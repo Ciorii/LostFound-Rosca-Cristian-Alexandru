@@ -57,6 +57,11 @@
             android:layout_marginStart="24dp"/>
 
     </RadioGroup>
+    <Button
+        android:id="@+id/btnAddPhotos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Adauga poze (max 3)" />
 
     <Button
         android:id="@+id/btnNext"
@@ -64,5 +69,16 @@
         android:layout_height="wrap_content"
         android:text="Next"
         android:backgroundTint="#1976D2"/>
+    <EditText
+        android:id="@+id/etContactEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email contact" />
+
+    <EditText
+        android:id="@+id/etContactPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Telefon contact" />
 
 </LinearLayout>

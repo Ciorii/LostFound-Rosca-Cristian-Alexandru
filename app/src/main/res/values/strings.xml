@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Lost&amp;Found</string>
+    <string name="nu_exista_postari">Nu exista postari momentan</string>
+    <string name="adauga">Adauga</string>
+    <string name="creeaza_cont">Creeaza un cont</string>
+    <string name="alatura_te">Alatura-te comunitatii noastre</string>
+    <string name="ai_deja_cont">Ai deja cont? Conecteaza-te</string>
+    <string name="sterge_postarea">Sterge postarea</string>
+    <string name="locatie">Locatie</string>
 </resources>

@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
-import com.example.lostfound.MainActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +16,7 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText etEmail, etPassword;
     Button btnLogin, btnGoRegister;
+    TextView tvForgotPassword;
     FirebaseAuth mAuth;
 
     @Override
@@ -28,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         btnGoRegister = findViewById(R.id.btnGoRegister);
+        tvForgotPassword = findViewById(R.id.tvForgotPassword);
 
         btnLogin.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
@@ -45,6 +47,22 @@ public class LoginActivity extends AppCompatActivity {
                     })
                     .addOnFailureListener(e ->
                             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show()
+                    );
+        });
+
+        tvForgotPassword.setOnClickListener(v -> {
+            String email = etEmail.getText().toString().trim();
+            if (email.isEmpty()) {
+                Toast.makeText(this, "Introdu adresa de email mai intai!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            mAuth.sendPasswordResetEmail(email)
+                    .addOnSuccessListener(aVoid ->
+                            Toast.makeText(this, "Link-ul de resetare a fost trimis pe email!", Toast.LENGTH_LONG).show()
+                    )
+                    .addOnFailureListener(e ->
+                            Toast.makeText(this, "Eroare: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                     );
         });
 
