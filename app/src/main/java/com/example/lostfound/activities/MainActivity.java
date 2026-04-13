@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -65,6 +66,23 @@ public class MainActivity extends AppCompatActivity {
         adapter = new PostAdapter(list);
         recyclerView.setAdapter(adapter);
 
+        SearchView searchView = findViewById(R.id.searchView);
+        if (searchView != null) {
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    adapter.getFilter().filter(query);
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    adapter.getFilter().filter(newText);
+                    return false;
+                }
+            });
+        }
+
         ExtendedFloatingActionButton fabAdd = findViewById(R.id.fabAdd);
         if (fabAdd != null) {
             fabAdd.setOnClickListener(v ->
@@ -83,14 +101,12 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     list.clear();
                     list.addAll(response.body());
+                    adapter.updateFullList(list);
                     adapter.notifyDataSetChanged();
 
-                    if (list.isEmpty()) {
-                        View tvEmpty = findViewById(R.id.tvEmpty);
-                        if (tvEmpty != null) tvEmpty.setVisibility(View.VISIBLE);
-                    } else {
-                        View tvEmpty = findViewById(R.id.tvEmpty);
-                        if (tvEmpty != null) tvEmpty.setVisibility(View.GONE);
+                    View tvEmpty = findViewById(R.id.tvEmpty);
+                    if (tvEmpty != null) {
+                        tvEmpty.setVisibility(list.isEmpty() ? View.VISIBLE : View.GONE);
                     }
                 }
             }

@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,14 +16,22 @@ import com.example.lostfound.R;
 import com.example.lostfound.activities.PostDetailActivity;
 import com.example.lostfound.models.LostObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> implements Filterable {
 
     private final List<LostObject> list;
+    private final List<LostObject> listFull;
 
     public PostAdapter(List<LostObject> list) {
         this.list = list;
+        this.listFull = new ArrayList<>(list);
+    }
+
+    public void updateFullList(List<LostObject> newList) {
+        listFull.clear();
+        listFull.addAll(newList);
     }
 
     @Override
@@ -71,6 +81,38 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public int getItemCount() {
         return list.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    private final Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<LostObject> filtered = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filtered.addAll(listFull);
+            } else {
+                String query = constraint.toString().toLowerCase().trim();
+                for (LostObject obj : listFull) {
+                    if (obj.getTitle() != null && obj.getTitle().toLowerCase().contains(query)) {
+                        filtered.add(obj);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filtered;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            list.clear();
+            list.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvCategory, tvDescription, tvAddress;
