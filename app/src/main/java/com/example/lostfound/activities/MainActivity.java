@@ -3,6 +3,7 @@ package com.example.lostfound.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -32,6 +33,15 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private PostAdapter adapter;
     private final List<LostObject> list = new ArrayList<>();
+
+    private final Handler handler = new Handler();
+    private final Runnable refreshRunnable = new Runnable() {
+        @Override
+        public void run() {
+            loadObjects();
+            handler.postDelayed(this, 10000);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         loadObjects();
+        handler.postDelayed(refreshRunnable, 10000);
     }
 
     private void loadObjects() {
@@ -115,5 +126,11 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<List<LostObject>> call, Throwable t) {
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(refreshRunnable);
     }
 }
